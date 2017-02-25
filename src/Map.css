@@ -1,0 +1,68 @@
+.Map {
+  width: 50vw;
+  height: 100vh;
+}
+
+.Map-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.Map-intro {
+  font-size: large;
+}
+
+#Map-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#Burnet {
+  stroke-dasharray: 795;
+  stroke-dashoffset: -795;
+  animation: Draw-Burnet-Up 3s ease-in forwards;
+}
+
+@keyframes Draw-Burnet-Up {
+  from {
+    stroke-dashoffset: -795;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+#Shoal-Creek {
+  stroke-dasharray: 403;
+  stroke-dashoffset: 403;
+  animation: Draw-Shoal-Creek 3s ease 3s forwards;
+}
+
+@keyframes Draw-Shoal-Creek {
+  from {
+    stroke-dashoffset: 403;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+#St45, #I-183, #Anderson, #Braker, #Koenig  {
+  stroke-dasharray: 403;
+  stroke-dashoffset: 403;
+  animation: Draw-Cross-Street 2s linear 2s forwards;
+}
+
+@keyframes Draw-Cross-Street {
+  from {
+    stroke-dashoffset: 403;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
