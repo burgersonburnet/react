@@ -38,14 +38,14 @@
 }
 
 #Shoal-Creek {
-  stroke-dasharray: 403;
-  stroke-dashoffset: 403;
+  stroke-dasharray: 460;
+  stroke-dashoffset: 460;
   animation: Draw-Shoal-Creek 3s ease 3s forwards;
 }
 
 @keyframes Draw-Shoal-Creek {
   from {
-    stroke-dashoffset: 403;
+    stroke-dashoffset: 460;
   }
   to {
     stroke-dashoffset: 0;
