@@ -7,6 +7,22 @@
 }
 
 .Map-restaurant-location {
-  
+    height: 16px;
+    width: 16px;
+    /*animation: spring 3s ease 0s normal;*/
+}
+
+@keyframes spring {
+    0% {
+        visibility: visible;
+        height: 32px;
+        width: 32px;
+    }
+    100% {
+        /*transform:scale(1,1);*/
+        visibility: visible;
+        height: 16px;
+        width: 16px;
+    }
 }
 

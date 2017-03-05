@@ -18,12 +18,8 @@ module.exports = [
         "restaurant_photo":"",
         "with_fries":true,
         "rating":0,
-        "burgers":[
-
-        ],
-        "reviews":[
-
-        ],
+        "burgers":[],
+        "reviews":[],
         "price":"10.50",
         "logo":"../img/stinsons.jpg"
     },
@@ -75,10 +71,8 @@ module.exports = [
         "with_fries":false,
         "rating":0,
         "burgers":[
-
         ],
         "reviews":[
-
         ],
         "price":"~10",
         "logo":""
