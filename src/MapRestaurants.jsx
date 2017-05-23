@@ -4,56 +4,134 @@ let burgerIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf
 let burgerSVG = require('./mapSVGs/burger-outline-filled.svg')
 
 class MapRestaurants extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      restaurants: this.props.restaurants,
+      displayedInfo: null,
+    };
+
+    this.clearInfo = this.clearInfo.bind(this);
+  }
 
   convertLatLongToSVGScale(restaurant) {
-    let svgWidth = 272;
-    let svgHeight = 792;
-    let topLeftLat = 30.413743;
-    let topLeftLong =  -97.750626;
-    let bottomRightLat = 30.310526;
-    let bottomRightLong = -97.710549;
-    let latDiff = topLeftLat - bottomRightLat;
-    let longDiff = Math.abs(topLeftLong - bottomRightLong);
+    const svgWidth = 272;
+    const svgHeight = 792;
+    const topLeftLat = 30.413743;
+    const topLeftLong = -97.750626;
+    const bottomRightLat = 30.310526;
+    const bottomRightLong = -97.710549;
+    const latDiff = topLeftLat - bottomRightLat;
+    const longDiff = Math.abs(topLeftLong - bottomRightLong);
 
-    let newX = Math.abs(topLeftLong - restaurant.longitude) / longDiff * svgWidth;
-    let newY = (topLeftLat - restaurant.latitude) / latDiff * svgHeight;
+    const newX = Math.abs(topLeftLong - restaurant.longitude) / (longDiff * svgWidth);
+    const newY = (topLeftLat - restaurant.latitude) / (latDiff * svgHeight);
     // console.log(newX, newY);
     return [newX, newY];
   }
 
+  displayRestaurantInfo(restaurant,e) {
+    console.log('show info for', restaurant.restaurant_name);
+    this.setState({
+      displayedInfo: {restaurant},
+    });
+  }
+
+  clearInfo(e) {
+
+    if (this.state.displayedInfo && e.nativeEvent.target.id === 'Map-restaurants') {
+      this.setState({
+          displayedInfo: null,
+        });
+    }
+
+    function isInsideInfoBox(e, restaurant) {
+
+      console.log('test',e.nativeEvent.target.getBoundingClientRect())
+
+      let isInside = false;
+      let clickX = e.nativeEvent.offsetX;
+      let clickY = e.nativeEvent.offsetY;
+
+      let topLeftX = restaurant.mapX + 8 - 95;
+      let topLeftY = restaurant.mapY - 55;
+      // let bottomLeftX = restaurant.mapX + 8 - 95;
+      // let bottomLeftY = restaurant.mapY;
+      let bottomRightX = restaurant.mapX + 8 + 95;
+      let bottomRightY = restaurant.mapY + 15;
+      // let topRightX = restaurant.mapX + 8 + 95;
+      // let topRightY = restaurant.mapY - 15;
+
+      if (clickX > topLeftX && clickX < bottomRightX && clickY > topLeftY && clickY < bottomRightY) {
+        isInside = true;
+      }
+
+
+      return isInside;
+    }
+    
+  }
+
   render() {
+    console.log('render!')
     return (
-        <svg id="Map-restaurants" viewBox="0 0 272 792">
+        <svg 
+          id="Map-restaurants" 
+          viewBox="0 0 272 792"
+          onClick={(e) => this.clearInfo(e)}
+          >
         {
-            this.props.restaurants.map((restaurant, idx) => {
-                let position = this.convertLatLongToSVGScale(restaurant);
-                let timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
-                return (
-                    <image
-                        className="Map-restaurant-location"
-                        style={{visibility: 'hidden', width: 16, height: 16, animation: timing}}
-                        x={restaurant.mapX || position[0]}
-                        y={restaurant.mapY || position[1]}
-                        width="16"
-                        height="16"
-                        key={idx}
-                        // ref={ref = this.ref}
-                        xlinkHref={burgerSVG}
-                        onClick={(rel) => console.log('click', restaurant.restaurant_name)}
-                    />
-                )
+            this.state.restaurants.map((restaurant, idx) => {
+              // let position = this.convertLatLongToSVGScale(restaurant);
+              let position = 0;
+              restaurant.infoDisplayed = false;
+              let timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
+
+              return (
+                <g id={restaurant.restaurant_name}>
+                  <image
+                    className="Map-restaurant-location"
+                    style={{ visibility: 'hidden', width: 16, height: 16, animation: timing}}
+                    x={restaurant.mapX} 
+                    y={restaurant.mapY} 
+                    width="16"
+                    height="16"
+                    key={idx}
+                    // ref={ref = this.ref}
+                    xlinkHref={burgerSVG}
+                    onClick={(e) => this.displayRestaurantInfo(restaurant, e)}
+                  />
+                  <circle style={{ visibility: restaurant.infoDisplayed ? 'visible' : 'hidden'}} cx={restaurant.mapX} cy={restaurant.mapY} r={100}></circle>
+                </g>
+              );
             })
         }
+
+        <path 
+          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden')}}
+          d={"M"+
+            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX+8 : 0)+
+            ","+
+            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY : 0) + 
+            `  c0,-15 -15,-15 -15,-15 
+               l-60,0 
+               c0,0 -20,0 -20,-40 
+               c0,-40 20,-40 20,-40 
+               l150,0 
+               c0,0 20,0 20,40 
+               c0,40 -20,40 -20,40 
+               l-60,0 
+               c0,0 -15,0 -15,15 
+               Z`}
+          id="info-bubble">
+        </path>
         </svg>
     );
   }
 }
 
 export default MapRestaurants;
-
 
 // 30.412017, -97.745536
 // 30.310526, -97.710549

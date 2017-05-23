@@ -4,7 +4,9 @@ import Map from './Map';
 import './index.css';
 import restaurants from './restaurants';
 
+const document = global.document;
+
 ReactDOM.render(
   <Map restaurants={restaurants} />,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
