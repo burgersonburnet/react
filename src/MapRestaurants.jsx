@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './MapRestaurants.css';
-let burgerIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAA1teXP8meAAAAedJREFUOBGdU0tvEmEUPdoGH6VKJAQIjZHYJjNpY1IWDV3qQk27IelCl3SJu24M/6Du/AkuTNomLjDpwqZdQ5u4rmAijpHwUCQgBRFCxHO/GYaXdtGbnLnP786d+50B/i27DPfGILEJuTQWSdAPv3y25nt6/x5QzQJnRSKPvaSBrSOUmP9CrBJKhhskXj3fiIT1OWi3Pf08UE4DDTapGch8MnCSBzb3kWGBLkXTVqU6HH20bLlDyqPqVECbBzS3IbbGJsfUq5dVhmOHb1Usc0x1GuYEEr5yQyXDAaXuyLM/AdD9DeRSLLqpsvaj+c028f10YFuW3SD2+iM03/WJAjsgjf50lZsZGlaWuI0niKNK6xAIUT1wOuH2evE1y1ugvCW4RiBG1IkywS9DCi9kB3HioqLO9nSPSZqFBfQikVECrQTQC8wO4HSYeV03tdqBbNXvBDycf3GRI3Nm7wzw8C7gugYUOHaVOxZpcw3vC0AwCKRJEdnBO07weIncefNB1SDkBxxTQMvcmRm0ntKg3AQqLRU46DOx6LoKn+Zm0Lrr0VOyOVOk6eca2d1WtPbb13gcJb00fZIHcq5O/tZzqsPPDpCku76j3AGRSrwWl8GPOkeafHvhF/CDoMiPNSJyevwX/p9vv+kvksGgDYFMbqsAAAAASUVORK5CYII="
-let burgerSVG = require('./mapSVGs/burger-outline-filled.svg')
+const burgerIcon = 'ata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAA1teXP8meAAAAedJREFUOBGdU0tvEmEUPdoGH6VKJAQIjZHYJjNpY1IWDV3qQk27IelCl3SJu24M/6Du/AkuTNomLjDpwqZdQ5u4rmAijpHwUCQgBRFCxHO/GYaXdtGbnLnP786d+50B/i27DPfGILEJuTQWSdAPv3y25nt6/x5QzQJnRSKPvaSBrSOUmP9CrBJKhhskXj3fiIT1OWi3Pf08UE4DDTapGch8MnCSBzb3kWGBLkXTVqU6HH20bLlDyqPqVECbBzS3IbbGJsfUq5dVhmOHb1Usc0x1GuYEEr5yQyXDAaXuyLM/AdD9DeRSLLqpsvaj+c028f10YFuW3SD2+iM03/WJAjsgjf50lZsZGlaWuI0niKNK6xAIUT1wOuH2evE1y1ugvCW4RiBG1IkywS9DCi9kB3HioqLO9nSPSZqFBfQikVECrQTQC8wO4HSYeV03tdqBbNXvBDycf3GRI3Nm7wzw8C7gugYUOHaVOxZpcw3vC0AwCKRJEdnBO07weIncefNB1SDkBxxTQMvcmRm0ntKg3AQqLRU46DOx6LoKn+Zm0Lrr0VOyOVOk6eca2d1WtPbb13gcJb00fZIHcq5O/tZzqsPPDpCku76j3AGRSrwWl8GPOkeafHvhF/CDoMiPNSJyevwX/p9vv+kvksGgDYFMbqsAAAAASUVORK5CYII=';
+const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
 class MapRestaurants extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class MapRestaurants extends Component {
     this.clearInfo = this.clearInfo.bind(this);
   }
 
-  convertLatLongToSVGScale(restaurant) {
+  convertLatLongToSVGScale (restaurant) {
     const svgWidth = 272;
     const svgHeight = 792;
     const topLeftLat = 30.413743;
@@ -31,62 +31,32 @@ class MapRestaurants extends Component {
     return [newX, newY];
   }
 
-  displayRestaurantInfo(restaurant,e) {
+  displayRestaurantInfo(restaurant) {
     console.log('show info for', restaurant.restaurant_name);
     this.setState({
-      displayedInfo: {restaurant},
+      displayedInfo: { restaurant },
     });
   }
 
   clearInfo(e) {
-
     if (this.state.displayedInfo && e.nativeEvent.target.id === 'Map-restaurants') {
       this.setState({
-          displayedInfo: null,
-        });
+        displayedInfo: null,
+      });
     }
-
-    function isInsideInfoBox(e, restaurant) {
-
-      console.log('test',e.nativeEvent.target.getBoundingClientRect())
-
-      let isInside = false;
-      let clickX = e.nativeEvent.offsetX;
-      let clickY = e.nativeEvent.offsetY;
-
-      let topLeftX = restaurant.mapX + 8 - 95;
-      let topLeftY = restaurant.mapY - 55;
-      // let bottomLeftX = restaurant.mapX + 8 - 95;
-      // let bottomLeftY = restaurant.mapY;
-      let bottomRightX = restaurant.mapX + 8 + 95;
-      let bottomRightY = restaurant.mapY + 15;
-      // let topRightX = restaurant.mapX + 8 + 95;
-      // let topRightY = restaurant.mapY - 15;
-
-      if (clickX > topLeftX && clickX < bottomRightX && clickY > topLeftY && clickY < bottomRightY) {
-        isInside = true;
-      }
-
-
-      return isInside;
-    }
-    
   }
 
   render() {
-    console.log('render!')
     return (
-        <svg 
-          id="Map-restaurants" 
-          viewBox="0 0 272 792"
-          onClick={(e) => this.clearInfo(e)}
-          >
+      <svg 
+        id="Map-restaurants" 
+        viewBox="0 0 272 792"
+        onClick={e => this.clearInfo(e)}
+      >
         {
             this.state.restaurants.map((restaurant, idx) => {
               // let position = this.convertLatLongToSVGScale(restaurant);
-              let position = 0;
-              restaurant.infoDisplayed = false;
-              let timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
+              const timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
 
               return (
                 <g id={restaurant.restaurant_name}>
@@ -111,7 +81,7 @@ class MapRestaurants extends Component {
         <path 
           style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden')}}
           d={"M"+
-            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX+8 : 0)+
+            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)+
             ","+
             (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY : 0) + 
             `  c0,-15 -15,-15 -15,-15 
@@ -124,9 +94,10 @@ class MapRestaurants extends Component {
                l-60,0 
                c0,0 -15,0 -15,15 
                Z`}
-          id="info-bubble">
+          id="info-bubble"
+        >
         </path>
-        </svg>
+      </svg>
     );
   }
 }
