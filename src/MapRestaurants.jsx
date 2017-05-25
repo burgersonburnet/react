@@ -33,9 +33,15 @@ class MapRestaurants extends Component {
 
   displayRestaurantInfo(restaurant) {
     console.log('show info for', restaurant.restaurant_name);
-    this.setState({
-      displayedInfo: { restaurant },
-    });
+    if (this.state.displayedInfo && this.state.displayedInfo.restaurant.restaurant_name === restaurant.restaurant_name) {
+      this.setState({
+        displayedInfo: null,
+      });
+    } else {
+      this.setState({
+        displayedInfo: { restaurant },
+      });
+    }
   }
 
   clearInfo(e) {
@@ -47,6 +53,7 @@ class MapRestaurants extends Component {
   }
 
   render() {
+
     return (
       <svg 
         id="Map-restaurants" 
@@ -59,7 +66,10 @@ class MapRestaurants extends Component {
               const timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
 
               return (
-                <g id={restaurant.restaurant_name}>
+                <g 
+                  id={restaurant.restaurant_name}
+                  key={restaurant.restaurant_name}
+                >
                   <image
                     className="Map-restaurant-location"
                     style={{ visibility: 'hidden', width: 16, height: 16, animation: timing}}
@@ -67,36 +77,43 @@ class MapRestaurants extends Component {
                     y={restaurant.mapY} 
                     width="16"
                     height="16"
-                    key={idx}
                     // ref={ref = this.ref}
                     xlinkHref={burgerSVG}
-                    onClick={(e) => this.displayRestaurantInfo(restaurant, e)}
+                    onClick={e => this.displayRestaurantInfo(restaurant, e)}
                   />
-                  <circle style={{ visibility: restaurant.infoDisplayed ? 'visible' : 'hidden'}} cx={restaurant.mapX} cy={restaurant.mapY} r={100}></circle>
+                  <circle style={{ visibility: restaurant.infoDisplayed ? 'visible' : 'hidden' }} cx={restaurant.mapX} cy={restaurant.mapY} r={100} />
                 </g>
               );
             })
         }
 
-        <path 
-          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden')}}
-          d={"M"+
-            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)+
-            ","+
-            (this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY : 0) + 
-            `  c0,-15 -15,-15 -15,-15 
-               l-60,0 
-               c0,0 -20,0 -20,-40 
-               c0,-40 20,-40 20,-40 
-               l150,0 
-               c0,0 20,0 20,40 
-               c0,40 -20,40 -20,40 
-               l-60,0 
-               c0,0 -15,0 -15,15 
-               Z`}
+        <path
+          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden') }}
+          d={`M
+            ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)}
+            ,
+            ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY : 0)}
+            c0,-15 -15,-15 -15,-15 
+            l-110,0 
+            c0,0 -20,0 -20,-80 
+            c0,-80 20,-80 20,-80 
+            l250,0 
+            c0,0 20,0 20,80 
+            c0,80 -20,80 -20,80 
+            l-110,0 
+            c0,0 -15,0 -15,15 
+            Z`}
           id="info-bubble"
+          fill="white"
+          stroke="black"
+        />
+        <text
+          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden') }}
+          x={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX - 117 : 0}
+          y={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY - 160 : 0}
         >
-        </path>
+          {this.state.displayedInfo ? this.state.displayedInfo.restaurant.restaurant_name : ''}
+        </text>
       </svg>
     );
   }
