@@ -3,6 +3,9 @@ import './MapRestaurants.css';
 
 const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
+const SVG_VIEWBOX_WIDTH = 272;
+const SVG_VIEWBOX_HEIGHT = 792;
+
 class MapRestaurants extends Component {
   constructor(props) {
     super(props);
@@ -17,11 +20,11 @@ class MapRestaurants extends Component {
 
   convertLatLongToSVGScale (restaurant) {
     const ratio = 792/272;
-    const svgWidth = ratio * window.innerWidth;
-    const svgHeight = ratio * window.innerHeight;
-    // console.log('svgWidth', svgWidth, 'svgHeight', svgHeight)
-    // const svgWidth = 272;
-    // const svgHeight = 792;
+    const svgWidthRatioHeight = ratio * window.innerWidth;
+    const svgHeightRatioHeight = ratio * window.innerHeight;
+    // console.log('svgWidthRatioHeight', svgWidthRatioHeight, 'svgHeightRatioHeight', svgHeightRatioHeight)
+    // const svgWidthRatioHeight = 272;
+    // const svgHeightRatioHeight = 792;
     const topLeftLat = 30.413743;
     const topLeftLong = -97.750626;
     const bottomRightLat = 30.310526;
@@ -29,13 +32,14 @@ class MapRestaurants extends Component {
     const latDiff = topLeftLat - bottomRightLat;
     const longDiff = Math.abs(topLeftLong - bottomRightLong);
 
-    const newX = Math.abs(topLeftLong - restaurant.longitude) / (longDiff * svgWidth);
-    const newY = (topLeftLat - restaurant.latitude) / (latDiff * svgHeight);
+    const newX = Math.abs(topLeftLong - restaurant.longitude) / (longDiff * svgWidthRatioHeight);
+    const newY = (topLeftLat - restaurant.latitude) / (latDiff * svgHeightRatioHeight);
     // console.log(newX, newY);
     return [newX, newY];
   }
 
-  displayRestaurantInfo(restaurant) {
+  displayRestaurantInfo(restaurant, e) {
+    console.log(`cursor location x ${e.clientX}`)
     // console.log('show info for', restaurant.restaurant_name);
     if (this.state.displayedInfo && this.state.displayedInfo.restaurant.restaurant_name === restaurant.restaurant_name) {
       this.setState({
@@ -49,77 +53,75 @@ class MapRestaurants extends Component {
   }
 
   getBubbleLocation() {
-    if (this.state.displayedInfo === null) {
-      return;
-    }
+    if (this.state.displayedInfo === null) return;
 
     console.log('mapX', this.state.displayedInfo.restaurant.mapX)
+    console.log('mapY', this.state.displayedInfo.restaurant.mapY)
     console.log('window height', window.innerHeight)
     console.log('window width', window.innerWidth)
-    
-    // 2.9117647059
-    // 229
-    // 1.1877729258 = 272/229
-    // 73 px from edge of canvas to edge of vp
-    // about 61 user space pixels
-    // 210 = 250/1.1877. 283 
-    // 92 pix to edge
-    // 109.2755484
 
+    const windowRatio = window.innerWidth / window.innerHeight;
+    console.log(`Width Ratio ${windowRatio}`)
+    const svgRatio = 272 / 792;
+    console.log(`SVG  Ratio ${svgRatio}`)
+    console.log(`Width Diff ${window.innerWidth / 272}`)
+    console.log(`Window ratio ${windowRatio}`)
+    console.log(`SVG ratio    ${svgRatio}`)
 
+    let svgToWindowUnitDiff;
+    if (windowRatio > svgRatio) { // width is bound by the height
+      svgToWindowUnitDiff = 1 + ((window.innerHeight - SVG_VIEWBOX_HEIGHT) / SVG_VIEWBOX_HEIGHT);
+    } else { // width is bounding
+      svgToWindowUnitDiff = (window.innerWidth - SVG_VIEWBOX_WIDTH) / SVG_VIEWBOX_WIDTH;
+    }
 
+    let leftOffset = 0;
+    if (windowRatio > svgRatio) {
+      const extraPixels = (window.innerWidth - (272 * svgToWindowUnitDiff)) / 2;
+      console.log('extraPixels ' + extraPixels)
+      const distFromEdge = extraPixels + (this.state.displayedInfo.restaurant.mapX * svgToWindowUnitDiff) + 8;
+      const bubbleWidth = 135 * svgToWindowUnitDiff;
+      console.log(`distance from edge ${distFromEdge}`)
+      console.log(`bubbleWidth ${bubbleWidth}`)
+      if (bubbleWidth > distFromEdge) {
+        leftOffset = bubbleWidth - distFromEdge;
+      } else if (bubbleWidth > window.innerWidth - distFromEdge) {
+        leftOffset = bubbleWidth - (window.innerWidth - distFromEdge);
+      }
+    }
 
-
-
-    console.log(
-      ((window.innerWidth - 
-      this.state.displayedInfo.restaurant.mapX) / 2) -
-      135
-      )
-    // let widthComparision = window.innerWidth / 272
-    // console.log('with units', widthComparision)
-    // let distanceFromEdge = 272 - this.state.displayedInfo.restaurant.mapX;
-    // console.log('distance from edge', distanceFromEdge)
-    // let overage = 135 - distanceFromEdge;
-    // console.log('overage', overage)
-    // // console.log('overage', overage*)
-    // console.log('restaurant svg x', this.state.displayedInfo.restaurant.mapX)
-    // console.log('side diff', (window.innerWidth - 272) / 2)
-
-    // SVG usage:
-    // begining control point x y, ending control point x y, final location x y
+    if (leftOffset !== 0) {
+      leftOffset = leftOffset + 2;
+    }
+    console.log('leftOffset ' + leftOffset)
 
     let pathDescriptors;
-    let endOffset = 15;
-    let bubbleOffset = 35; // bubble travel from center
+
     if (this.state.displayedInfo.restaurant.mapY > 175) {
-      if (window.innerWidth < 380 && this.state.displayedInfo.restaurant.mapX < 40) {
-        endOffset = 30;
-      }
       pathDescriptors = `M ${this.state.displayedInfo.restaurant.mapX + 8},
                 ${this.state.displayedInfo.restaurant.mapY}
                 c0,-15 -15,-15 -15,-15
-                l-100,0 
+                l-${100 - leftOffset},0 
                 c0,0 -20,0 -20,-80 
                 c0,-80 20,-80 20,-80 
                 l230,0 
                 c0,0 20,0 20,80 
                 c0,80 -20,80 -20,80 
-                l-100,0 
+                l-${100 + leftOffset},0 
                 c0,0 -15,0 -15,15 
                 Z`;
     } else {
-      pathDescriptors = `M ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)},
-                ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + 16 : 0)}`
+      pathDescriptors = `M ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)},`
+      pathDescriptors += `${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + 16 : 0)} `
       pathDescriptors += 
         `c0,15 -15,15 -15,15 
-        l-${100 + bubbleOffset},0
+        l-${100 + leftOffset},0
         c0,0 -20,0 -20,80 
         c0,80 20,80 20,80 
         l230,0 
         c0,0 20,0 20,-80 
         c0,-80 -20,-80 -20,-80
-        l-${100 - bubbleOffset},0 
+        l-${100 - leftOffset},0 
         c0,0 -15,0 -15,-15
         Z`;
     }
@@ -175,6 +177,7 @@ class MapRestaurants extends Component {
           id="info-bubble"
           fill="white"
           stroke="black"
+          strokeWidth="1"
         />
         </g>
         <text

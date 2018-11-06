@@ -6,7 +6,7 @@ import MapRestaurants from './MapRestaurants';
 class Map extends Component {
   render() {
     return (
-      <div className="Map">
+      <div className="Map" onClick={(e) => console.log(`cursor location x ${e.clientX}`)}>
         <MapBackground />
         <MapRestaurants restaurants={this.props.restaurants} />
       </div>
