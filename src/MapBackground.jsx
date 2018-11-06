@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import './Map.css';
 
 class MapBackground extends Component {
-    constructor(props) {
-        super(props);
-        // console.log('received', props.restaurants.length, 'restaurants');
-    }
     componentDidMount() {
         // let line = document.getElementById('Shoal-Creek')
         // console.log(line.getTotalLength());

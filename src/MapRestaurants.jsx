@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './MapRestaurants.css';
-const burgerIcon = 'ata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAA1teXP8meAAAAedJREFUOBGdU0tvEmEUPdoGH6VKJAQIjZHYJjNpY1IWDV3qQk27IelCl3SJu24M/6Du/AkuTNomLjDpwqZdQ5u4rmAijpHwUCQgBRFCxHO/GYaXdtGbnLnP786d+50B/i27DPfGILEJuTQWSdAPv3y25nt6/x5QzQJnRSKPvaSBrSOUmP9CrBJKhhskXj3fiIT1OWi3Pf08UE4DDTapGch8MnCSBzb3kWGBLkXTVqU6HH20bLlDyqPqVECbBzS3IbbGJsfUq5dVhmOHb1Usc0x1GuYEEr5yQyXDAaXuyLM/AdD9DeRSLLqpsvaj+c028f10YFuW3SD2+iM03/WJAjsgjf50lZsZGlaWuI0niKNK6xAIUT1wOuH2evE1y1ugvCW4RiBG1IkywS9DCi9kB3HioqLO9nSPSZqFBfQikVECrQTQC8wO4HSYeV03tdqBbNXvBDycf3GRI3Nm7wzw8C7gugYUOHaVOxZpcw3vC0AwCKRJEdnBO07weIncefNB1SDkBxxTQMvcmRm0ntKg3AQqLRU46DOx6LoKn+Zm0Lrr0VOyOVOk6eca2d1WtPbb13gcJb00fZIHcq5O/tZzqsPPDpCku76j3AGRSrwWl8GPOkeafHvhF/CDoMiPNSJyevwX/p9vv+kvksGgDYFMbqsAAAAASUVORK5CYII=';
+
 const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
 class MapRestaurants extends Component {
@@ -16,8 +16,12 @@ class MapRestaurants extends Component {
   }
 
   convertLatLongToSVGScale (restaurant) {
-    const svgWidth = 272;
-    const svgHeight = 792;
+    const ratio = 792/272;
+    const svgWidth = ratio * window.innerWidth;
+    const svgHeight = ratio * window.innerHeight;
+    // console.log('svgWidth', svgWidth, 'svgHeight', svgHeight)
+    // const svgWidth = 272;
+    // const svgHeight = 792;
     const topLeftLat = 30.413743;
     const topLeftLong = -97.750626;
     const bottomRightLat = 30.310526;
@@ -32,7 +36,7 @@ class MapRestaurants extends Component {
   }
 
   displayRestaurantInfo(restaurant) {
-    console.log('show info for', restaurant.restaurant_name);
+    // console.log('show info for', restaurant.restaurant_name);
     if (this.state.displayedInfo && this.state.displayedInfo.restaurant.restaurant_name === restaurant.restaurant_name) {
       this.setState({
         displayedInfo: null,
@@ -44,6 +48,85 @@ class MapRestaurants extends Component {
     }
   }
 
+  getBubbleLocation() {
+    if (this.state.displayedInfo === null) {
+      return;
+    }
+
+    console.log('mapX', this.state.displayedInfo.restaurant.mapX)
+    console.log('window height', window.innerHeight)
+    console.log('window width', window.innerWidth)
+    
+    // 2.9117647059
+    // 229
+    // 1.1877729258 = 272/229
+    // 73 px from edge of canvas to edge of vp
+    // about 61 user space pixels
+    // 210 = 250/1.1877. 283 
+    // 92 pix to edge
+    // 109.2755484
+
+
+
+
+
+
+    console.log(
+      ((window.innerWidth - 
+      this.state.displayedInfo.restaurant.mapX) / 2) -
+      135
+      )
+    // let widthComparision = window.innerWidth / 272
+    // console.log('with units', widthComparision)
+    // let distanceFromEdge = 272 - this.state.displayedInfo.restaurant.mapX;
+    // console.log('distance from edge', distanceFromEdge)
+    // let overage = 135 - distanceFromEdge;
+    // console.log('overage', overage)
+    // // console.log('overage', overage*)
+    // console.log('restaurant svg x', this.state.displayedInfo.restaurant.mapX)
+    // console.log('side diff', (window.innerWidth - 272) / 2)
+
+    // SVG usage:
+    // begining control point x y, ending control point x y, final location x y
+
+    let pathDescriptors;
+    let endOffset = 15;
+    let bubbleOffset = 35; // bubble travel from center
+    if (this.state.displayedInfo.restaurant.mapY > 175) {
+      if (window.innerWidth < 380 && this.state.displayedInfo.restaurant.mapX < 40) {
+        endOffset = 30;
+      }
+      pathDescriptors = `M ${this.state.displayedInfo.restaurant.mapX + 8},
+                ${this.state.displayedInfo.restaurant.mapY}
+                c0,-15 -15,-15 -15,-15
+                l-100,0 
+                c0,0 -20,0 -20,-80 
+                c0,-80 20,-80 20,-80 
+                l230,0 
+                c0,0 20,0 20,80 
+                c0,80 -20,80 -20,80 
+                l-100,0 
+                c0,0 -15,0 -15,15 
+                Z`;
+    } else {
+      pathDescriptors = `M ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)},
+                ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + 16 : 0)}`
+      pathDescriptors += 
+        `c0,15 -15,15 -15,15 
+        l-${100 + bubbleOffset},0
+        c0,0 -20,0 -20,80 
+        c0,80 20,80 20,80 
+        l230,0 
+        c0,0 20,0 20,-80 
+        c0,-80 -20,-80 -20,-80
+        l-${100 - bubbleOffset},0 
+        c0,0 -15,0 -15,-15
+        Z`;
+    }
+    
+    return pathDescriptors;
+  }
+
   clearInfo(e) {
     if (this.state.displayedInfo && e.nativeEvent.target.id === 'Map-restaurants') {
       this.setState({
@@ -53,7 +136,6 @@ class MapRestaurants extends Component {
   }
 
   render() {
-
     return (
       <svg 
         id="Map-restaurants" 
@@ -86,31 +168,19 @@ class MapRestaurants extends Component {
               );
             })
         }
-
+        <g>
         <path
-          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden') }}
-          d={`M
-            ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)}
-            ,
-            ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY : 0)}
-            c0,-15 -15,-15 -15,-15 
-            l-110,0 
-            c0,0 -20,0 -20,-80 
-            c0,-80 20,-80 20,-80 
-            l250,0 
-            c0,0 20,0 20,80 
-            c0,80 -20,80 -20,80 
-            l-110,0 
-            c0,0 -15,0 -15,15 
-            Z`}
+          className="Map-popup"
+          d={ this.getBubbleLocation() }
           id="info-bubble"
           fill="white"
           stroke="black"
         />
+        </g>
         <text
           style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden') }}
-          x={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX - 117 : 0}
-          y={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY - 160 : 0}
+          x={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX - 107 : 0}
+          y={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + (this.state.displayedInfo.restaurant.mapY > 175 ? -160 : 185) : 0}
         >
           {this.state.displayedInfo ? this.state.displayedInfo.restaurant.restaurant_name : ''}
         </text>

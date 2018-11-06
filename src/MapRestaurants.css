@@ -12,6 +12,11 @@
     /*animation: spring 3s ease 0s normal;*/
 }
 
+.Map-popup {
+  animation: spring 5s linear alternate infinite
+}
+
+
 @keyframes spring {
     0% {
         visibility: visible;

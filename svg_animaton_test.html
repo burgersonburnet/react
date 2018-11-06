@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>testing</title>
+  <style>
+  .circle {
+    animation: 4s linear 0s infinite alternate pulse;
+    fill: 'white';
+  }
+  @keyframes move_eye { from { margin-left: -20%; } to { margin-left: 100%; }  }
+
+  @-webkit-keyframes pulse {
+    from {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+    50% {
+      -webkit-transform: scale3d(1.05, 1.05, 1.05);
+      transform: scale3d(1.05, 1.05, 1.05);
+    }
+    to {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
+
+  </style>
+
+</head>
+<body>
+
+  <svg viewBox="0 0 1000 1000">
+    <circle class='circle' stoke='black' cx=500 cy=500 r=50 />
+  </svg>
+
+</body>
+</html>
