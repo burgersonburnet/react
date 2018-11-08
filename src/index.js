@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Map from './Map';
 import './index.css';
-import restaurants from './restaurants';
 
 const document = global.document;
 
 ReactDOM.render(
-  <Map restaurants={restaurants} />,
+  <Map />,
   document.getElementById('root'),
 );

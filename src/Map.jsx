@@ -8,7 +8,7 @@ class Map extends Component {
     return (
       <div className="Map" onClick={(e) => console.log(`cursor location x ${e.clientX}`)}>
         <MapBackground />
-        <MapRestaurants restaurants={this.props.restaurants} />
+        <MapRestaurants/>
       </div>
     );
   }

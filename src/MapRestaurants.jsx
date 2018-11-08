@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './MapRestaurants.css';
+import restaurants from './restaurants';
 
+const RESTAURANTS = restaurants;
 const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
 const SVG_VIEWBOX_WIDTH = 272;
@@ -11,7 +13,7 @@ class MapRestaurants extends Component {
     super(props);
 
     this.state = {
-      restaurants: this.props.restaurants,
+      restaurants: RESTAURANTS,
       displayedInfo: null,
     };
 
@@ -61,7 +63,6 @@ class MapRestaurants extends Component {
     console.log('window width', window.innerWidth)
 
     const windowRatio = window.innerWidth / window.innerHeight;
-    console.log(`Width Ratio ${windowRatio}`)
     const svgRatio = 272 / 792;
     console.log(`SVG  Ratio ${svgRatio}`)
     console.log(`Width Diff ${window.innerWidth / 272}`)
@@ -71,12 +72,14 @@ class MapRestaurants extends Component {
     let svgToWindowUnitDiff;
     if (windowRatio > svgRatio) { // width is bound by the height
       svgToWindowUnitDiff = 1 + ((window.innerHeight - SVG_VIEWBOX_HEIGHT) / SVG_VIEWBOX_HEIGHT);
-    } else { // width is bounding
+    } else if (svgRatio > windowRatio) { // width is bounding
       svgToWindowUnitDiff = (window.innerWidth - SVG_VIEWBOX_WIDTH) / SVG_VIEWBOX_WIDTH;
+    } else {
+      svgToWindowUnitDiff = 1
     }
 
     let leftOffset = 0;
-    if (windowRatio > svgRatio) {
+    if (windowRatio >= svgRatio) {
       const extraPixels = (window.innerWidth - (272 * svgToWindowUnitDiff)) / 2;
       console.log('extraPixels ' + extraPixels)
       const distFromEdge = extraPixels + (this.state.displayedInfo.restaurant.mapX * svgToWindowUnitDiff) + 8;
@@ -91,7 +94,7 @@ class MapRestaurants extends Component {
     }
 
     if (leftOffset !== 0) {
-      leftOffset = leftOffset + 2;
+      leftOffset =+ 5;
     }
     console.log('leftOffset ' + leftOffset)
 
