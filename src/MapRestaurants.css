@@ -6,16 +6,14 @@
   right: 0;
 }
 
-.Map-restaurant-location {
+.mmp-restaurant-location {
     height: 16px;
     width: 16px;
-    /*animation: spring 3s ease 0s normal;*/
 }
 
-.Map-popup {
+.map-popup {
   animation: spring 5s linear alternate infinite
 }
-
 
 @keyframes spring {
     0% {

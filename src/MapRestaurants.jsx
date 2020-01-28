@@ -7,6 +7,8 @@ const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
 const SVG_VIEWBOX_WIDTH = 272;
 const SVG_VIEWBOX_HEIGHT = 792;
+const svgRatio = SVG_VIEWBOX_WIDTH / SVG_VIEWBOX_HEIGHT;
+const windowRatio = window.innerWidth / window.innerHeight;
 
 class MapRestaurants extends Component {
   constructor(props) {
@@ -20,7 +22,7 @@ class MapRestaurants extends Component {
     this.clearInfo = this.clearInfo.bind(this);
   }
 
-  convertLatLongToSVGScale (restaurant) {
+  convertLatLongToSVGScale(restaurant) {
     const ratio = 792/272;
     const svgWidthRatioHeight = ratio * window.innerWidth;
     const svgHeightRatioHeight = ratio * window.innerHeight;
@@ -41,7 +43,6 @@ class MapRestaurants extends Component {
   }
 
   displayRestaurantInfo(restaurant, e) {
-    // console.log('show info for', restaurant.restaurant_name);
     if (this.state.displayedInfo && this.state.displayedInfo.restaurant.restaurant_name === restaurant.restaurant_name) {
       this.setState({
         displayedInfo: null,
@@ -56,16 +57,11 @@ class MapRestaurants extends Component {
   getBubbleLocation() {
     if (this.state.displayedInfo === null) return;
 
-    const windowRatio = window.innerWidth / window.innerHeight;
-    const svgRatio = 272 / 792;
-
-    let svgToWindowUnitDiff;
+    let svgToWindowUnitDiff = 1; // in a perfect world
     if (windowRatio > svgRatio) { // width is bound by the height
       svgToWindowUnitDiff = 1 + ((window.innerHeight - SVG_VIEWBOX_HEIGHT) / SVG_VIEWBOX_HEIGHT);
     } else if (svgRatio > windowRatio) { // width is bounding
       svgToWindowUnitDiff = (window.innerWidth - SVG_VIEWBOX_WIDTH) / SVG_VIEWBOX_WIDTH;
-    } else {
-      svgToWindowUnitDiff = 1
     }
 
     let leftOffset = 0;
@@ -81,12 +77,12 @@ class MapRestaurants extends Component {
     }
 
     if (leftOffset !== 0) {
-      leftOffset =+ 5;
+      leftOffset += 5;
     }
 
     let pathDescriptors;
 
-    if (this.state.displayedInfo.restaurant.mapY > 175) {
+    if (this.state.displayedInfo.restaurant.mapY > 175) { // we can display it upwards
       pathDescriptors = `M ${this.state.displayedInfo.restaurant.mapX + 8},
                 ${this.state.displayedInfo.restaurant.mapY}
                 c0,-15 -15,-15 -15,-15
@@ -99,7 +95,7 @@ class MapRestaurants extends Component {
                 l-${100 + leftOffset},0 
                 c0,0 -15,0 -15,15 
                 Z`;
-    } else {
+    } else { // display it down
       pathDescriptors = `M ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)},`
       pathDescriptors += `${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + 16 : 0)} `
       pathDescriptors += 
@@ -118,6 +114,7 @@ class MapRestaurants extends Component {
     return pathDescriptors;
   }
 
+  // clears bubble on map click
   clearInfo(e) {
     if (this.state.displayedInfo && e.nativeEvent.target.id === 'Map-restaurants') {
       this.setState({
@@ -136,7 +133,7 @@ class MapRestaurants extends Component {
         {
             this.state.restaurants.map((restaurant, idx) => {
               // let position = this.convertLatLongToSVGScale(restaurant);
-              const timing = 'spring 1s ease-in ' + (1 + idx * 0.1) + 's forwards';
+              const timing = `spring 1s ease-in ${1 + idx * 0.1}s forwards`;
 
               return (
                 <g 
@@ -144,7 +141,7 @@ class MapRestaurants extends Component {
                   key={restaurant.restaurant_name}
                 >
                   <image
-                    className="Map-restaurant-location"
+                    className="map-restaurant-location"
                     style={{ visibility: 'hidden', width: 16, height: 16, animation: timing}}
                     x={restaurant.mapX} 
                     y={restaurant.mapY} 
@@ -161,7 +158,7 @@ class MapRestaurants extends Component {
         }
         <g>
         <path
-          className="Map-popup"
+          className="map-popup"
           d={ this.getBubbleLocation() }
           id="info-bubble"
           fill="white"
