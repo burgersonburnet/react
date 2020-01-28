@@ -52,33 +52,7 @@ module.exports = [
         "logo":"../img/bluestar.gif"
     },
     {
-        "restaurant_name":"Noble Sandwich Co.",
-        "description":"place for pig",
-        "on_burnet":true,
-        "address":"4805 Burnet Rd",
-        "zip":"78756",
-        "latitude":30.31899,
-        "longitude":-97.73882,
-        "mapX":74,
-        "mapY":728,
-        "drive_through":false,
-        "service_style":"don't know yet",
-        "phone":"512.666.5124",
-        "website":"http://noblesandwiches.com",
-        "menu":"http://noblesandwiches.com/menu",
-        "glankler_gripe":"no gripe yet",
-        "restaurant_photo":"",
-        "with_fries":false,
-        "rating":0,
-        "burgers":[
-        ],
-        "reviews":[
-        ],
-        "price":"~10",
-        "logo":""
-    },
-    {
-        "restaurant_name":"Citizen",
+        "restaurant_name":"Citizen Eatery",
         "description":"grill with a superfluous e",
         "on_burnet":true,
         "address":"5011 Burnet Rd #150",
@@ -355,34 +329,6 @@ module.exports = [
 
         ],
         "price":"6-10",
-        "logo":""
-    },
-    {
-        "restaurant_name":"Twisted Root Burger Co.",
-        "description":"cool franchise",
-        "on_burnet":true,
-        "address":"7211 Burnet Rd.",
-        "zip":"78757",
-        "latitude":30.347991,
-        "longitude":-97.73532,
-        "mapX":107,
-        "mapY":476,
-        "drive_through":false,
-        "service_style":"counter service",
-        "phone":"512.925.2161",
-        "website":"http://twistedrootburgerco.com",
-        "menu":"http://twistedrootburgerco.com/menu/",
-        "glankler_gripe":"no gripe yet",
-        "restaurant_photo":"",
-        "with_fries":false,
-        "rating":0,
-        "burgers":[
-
-        ],
-        "reviews":[
-
-        ],
-        "price":"9-11",
         "logo":""
     },
     {
