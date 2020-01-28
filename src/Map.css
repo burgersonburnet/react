@@ -1,4 +1,3 @@
-
 .Map {
   width: 50vw;
   height: 100vh;
@@ -24,8 +23,7 @@
 }
 
 #Burnet {
-  stroke-dasharray: 795;
-  stroke-dashoffset: 0;
+  stroke-dasharray: 795 795;
   animation: Draw-Burnet-Up 3s ease-in forwards;
 }
 
