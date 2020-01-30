@@ -17,7 +17,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[],
         "reviews":[],
         "price":"10.50",
@@ -41,7 +41,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -69,7 +69,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -97,7 +97,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -125,7 +125,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -153,7 +153,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -181,7 +181,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -209,7 +209,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -237,7 +237,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -265,7 +265,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -293,7 +293,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -321,7 +321,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -349,7 +349,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -377,7 +377,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -405,7 +405,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -433,7 +433,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -461,7 +461,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -489,7 +489,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -517,7 +517,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -545,7 +545,7 @@ module.exports = [
         "glankler_gripe":"no gripe yet",
         "restaurant_photo":"",
         "with_fries":false,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],
@@ -574,7 +574,7 @@ module.exports = [
         "restaurant_photo":"",
         "reviewed":false,
         "with_fries":true,
-        "rating":0,
+        "rating": null,
         "burgers":[
 
         ],

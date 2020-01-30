@@ -5,6 +5,8 @@ const svgRatio = SVG_VIEWBOX_WIDTH / SVG_VIEWBOX_HEIGHT;
 const windowRatio = window.innerWidth / window.innerHeight;
 
 export default function DefaultBubble(props) {
+  let bubbleX = props.x - 107;
+  let bubbleY = props.y + (props.y > 175 ? -160 : 45);
 
   return (
     <g>
@@ -17,10 +19,12 @@ export default function DefaultBubble(props) {
         strokeWidth="1"
       />
         <text
-          x={props.x - 107}
-          y={props.y + (props.y > 175 ? -160 : 185)}
+          x={bubbleX}
+          y={bubbleY}
         >
-          {props.restaurant.restaurant_name}
+          <tspan x={bubbleX} dy=".6em">{props.restaurant.restaurant_name}</tspan>
+          <tspan x={bubbleX} dy="1.2em">"{props.restaurant.description}"</tspan>
+          <tspan x={bubbleX} dy="1.2em">Rating: {props.restaurant.rating === null ? 'must try burgers' : props.restaurant.rating}</tspan>
         </text>
     </g>
   )
