@@ -6,11 +6,6 @@ import DetailBubble from './DetailBubble';
 const RESTAURANTS = restaurants;
 const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
 
-const SVG_VIEWBOX_WIDTH = 272;
-const SVG_VIEWBOX_HEIGHT = 792;
-const svgRatio = SVG_VIEWBOX_WIDTH / SVG_VIEWBOX_HEIGHT;
-const windowRatio = window.innerWidth / window.innerHeight;
-
 class MapRestaurants extends Component {
   constructor(props) {
     super(props);
@@ -55,66 +50,6 @@ class MapRestaurants extends Component {
     }
   }
 
-  getBubbleLocation() {
-    if (this.state.displayedInfo === null) return;
-
-    let svgToWindowUnitDiff = 1; // in a perfect world
-    if (windowRatio > svgRatio) { // width is bound by the height
-      svgToWindowUnitDiff = 1 + ((window.innerHeight - SVG_VIEWBOX_HEIGHT) / SVG_VIEWBOX_HEIGHT);
-    } else if (svgRatio > windowRatio) { // width is bounding
-      svgToWindowUnitDiff = (window.innerWidth - SVG_VIEWBOX_WIDTH) / SVG_VIEWBOX_WIDTH;
-    }
-
-    let leftOffset = 0;
-    if (windowRatio >= svgRatio) {
-      const extraPixels = (window.innerWidth - (272 * svgToWindowUnitDiff)) / 2;
-      const distFromEdge = extraPixels + (this.state.displayedInfo.restaurant.mapX * svgToWindowUnitDiff) + 8;
-      const bubbleWidth = 135 * svgToWindowUnitDiff;
-      if (bubbleWidth > distFromEdge) {
-        leftOffset = bubbleWidth - distFromEdge;
-      } else if (bubbleWidth > window.innerWidth - distFromEdge) {
-        leftOffset = bubbleWidth - (window.innerWidth - distFromEdge);
-      }
-    }
-
-    if (leftOffset !== 0) {
-      leftOffset += 5;
-    }
-
-    let pathDescriptors;
-
-    if (this.state.displayedInfo.restaurant.mapY > 175) { // we can display it upwards
-      pathDescriptors = `M ${this.state.displayedInfo.restaurant.mapX + 8},
-                ${this.state.displayedInfo.restaurant.mapY}
-                c0,-15 -15,-15 -15,-15
-                l-${100 - leftOffset},0 
-                c0,0 -20,0 -20,-80 
-                c0,-80 20,-80 20,-80 
-                l230,0 
-                c0,0 20,0 20,80 
-                c0,80 -20,80 -20,80 
-                l-${100 + leftOffset},0 
-                c0,0 -15,0 -15,15 
-                Z`;
-    } else { // display it down
-      pathDescriptors = `M ${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX + 8 : 0)},`
-      pathDescriptors += `${(this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + 16 : 0)} `
-      pathDescriptors += 
-        `c0,15 -15,15 -15,15 
-        l-${100 + leftOffset},0
-        c0,0 -20,0 -20,80 
-        c0,80 20,80 20,80 
-        l230,0 
-        c0,0 20,0 20,-80 
-        c0,-80 -20,-80 -20,-80
-        l-${100 - leftOffset},0 
-        c0,0 -15,0 -15,-15
-        Z`;
-    }
-    
-    return pathDescriptors;
-  }
-
   // clears bubble on map click
   clearInfo(e) {
     if (this.state.displayedInfo && e.nativeEvent.target.id === 'Map-restaurants') {
@@ -122,6 +57,15 @@ class MapRestaurants extends Component {
         displayedInfo: null,
       });
     }
+  }
+
+  restaurantBubble() {
+    return <DetailBubble
+      visible={this.state.displayedInfo}
+      x={this.state.displayedInfo.restaurant.mapX}
+      y={this.state.displayedInfo.restaurant.mapY}
+      restaurant={this.state.displayedInfo.restaurant}
+    />
   }
 
   render() {
@@ -157,22 +101,7 @@ class MapRestaurants extends Component {
               );
             })
         }
-        <g>
-        <path
-          className="map-popup"
-          d={ this.getBubbleLocation() }
-          id="info-bubble"
-          fill="white"
-          stroke="black"
-          strokeWidth="1"
-        />
-        </g>
-        <DetailBubble
-          visible={this.state.displayedInfo}
-          x={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX - 107 : 0}
-          y={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + (this.state.displayedInfo.restaurant.mapY > 175 ? -160 : 185) : 0}
-          restaurant={this.state.displayedInfo && this.state.displayedInfo.restaurant}
-        />
+        { this.state.displayedInfo ? this.restaurantBubble() : '' }
       </svg>
     );
   }
