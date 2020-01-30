@@ -18,26 +18,6 @@ class MapRestaurants extends Component {
     this.clearInfo = this.clearInfo.bind(this);
   }
 
-  convertLatLongToSVGScale(restaurant) {
-    const ratio = 792/272;
-    const svgWidthRatioHeight = ratio * window.innerWidth;
-    const svgHeightRatioHeight = ratio * window.innerHeight;
-    // console.log('svgWidthRatioHeight', svgWidthRatioHeight, 'svgHeightRatioHeight', svgHeightRatioHeight)
-    // const svgWidthRatioHeight = 272;
-    // const svgHeightRatioHeight = 792;
-    const topLeftLat = 30.413743;
-    const topLeftLong = -97.750626;
-    const bottomRightLat = 30.310526;
-    const bottomRightLong = -97.710549;
-    const latDiff = topLeftLat - bottomRightLat;
-    const longDiff = Math.abs(topLeftLong - bottomRightLong);
-
-    const newX = Math.abs(topLeftLong - restaurant.longitude) / (longDiff * svgWidthRatioHeight);
-    const newY = (topLeftLat - restaurant.latitude) / (latDiff * svgHeightRatioHeight);
-    // console.log(newX, newY);
-    return [newX, newY];
-  }
-
   displayRestaurantInfo(restaurant, e) {
     if (this.state.displayedInfo && this.state.displayedInfo.restaurant.restaurant_name === restaurant.restaurant_name) {
       this.setState({
@@ -77,7 +57,6 @@ class MapRestaurants extends Component {
       >
         {
             this.state.restaurants.map((restaurant, idx) => {
-              // let position = this.convertLatLongToSVGScale(restaurant);
               const timing = `spring 1s ease-in ${1 + idx * 0.1}s forwards`;
 
               return (
