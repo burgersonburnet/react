@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './MapRestaurants.css';
 import restaurants from './restaurants';
+import DetailBubble from './DetailBubble';
 
 const RESTAURANTS = restaurants;
 const burgerSVG = require('./mapSVGs/burger-outline-filled.svg');
@@ -166,13 +167,12 @@ class MapRestaurants extends Component {
           strokeWidth="1"
         />
         </g>
-        <text
-          style={{ visibility: (this.state.displayedInfo ? 'visible' : 'hidden') }}
+        <DetailBubble
+          visible={this.state.displayedInfo}
           x={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapX - 107 : 0}
           y={this.state.displayedInfo ? this.state.displayedInfo.restaurant.mapY + (this.state.displayedInfo.restaurant.mapY > 175 ? -160 : 185) : 0}
-        >
-          {this.state.displayedInfo ? this.state.displayedInfo.restaurant.restaurant_name : ''}
-        </text>
+          restaurant={this.state.displayedInfo && this.state.displayedInfo.restaurant}
+        />
       </svg>
     );
   }

@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import './Map.css';
 
 class MapBackground extends Component {
-    componentDidMount() {
-        // let line = document.getElementById('Shoal-Creek')
-        // console.log(line.getTotalLength());
-    }
   render() {
     return (
         <svg id="Map-background" viewBox="0 0 272 792">
