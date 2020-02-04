@@ -193,7 +193,7 @@ module.exports = [
     },
     {
         "restaurant_name":"The Peached Tortilla",
-        "description":"the peaches seldom make an appearance",
+        "description":"got peaches?",
         "on_burnet":true,
         "address":"5520 Burnet Rd #100",
         "zip":"78756",
@@ -557,7 +557,7 @@ module.exports = [
     },
     {
         "restaurant_name":"Big Daddy's Burgers & Bar",
-        "description":"you too",
+        "description":"hey big daddy",
         "on_burnet":false,
         "address":"9070 Research Blvd #101",
         "zip":"78758",

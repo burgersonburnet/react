@@ -22,7 +22,6 @@
         width: 32px;
     }
     100% {
-        /*transform:scale(1,1);*/
         visibility: visible;
         height: 16px;
         width: 16px;
